@@ -13,12 +13,14 @@ RUN apk update && \
   openssl \
   libffi-dev
 RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel \
-  && python -m pip install --no-cache-dir pipenv==2023.3.20
+  && python -m pip install --no-cache-dir \
+  flask==2.2.3 \
+  flask-cors==3.0.10 \
+  uwsgi==2.0.21
 
 RUN mkdir -p /var/www/app && mkdir /app
 
 COPY Pipfile* /app
-RUN cd /app && pipenv install --system --deploy --ignore-pipfile
 
 COPY . /app
 
