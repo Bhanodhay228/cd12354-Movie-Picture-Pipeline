@@ -79,10 +79,15 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: Configure kubectl
         run: aws eks update-kubeconfig --name "${{ vars.EKS_CLUSTER_NAME || 'cluster' }}" --region "$AWS_REGION"
+      - name: Log in to Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
       - name: Install Kustomize
         uses: imranismail/setup-kustomize@v2
       - name: Deploy frontend
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
         working-directory: starter/frontend/k8s
         run: |
-          kustomize edit set image frontend="$ECR_REPOSITORY:$IMAGE_TAG"
+          kustomize edit set image frontend="$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           kustomize build | kubectl apply -f -
