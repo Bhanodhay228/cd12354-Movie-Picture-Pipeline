@@ -13,7 +13,7 @@ RUN apk update && \
   openssl \
   libffi-dev
 RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel \
-  && python -m pip install --no-cache-dir pipenv==2023.2.20
+  && python -m pip install --no-cache-dir pipenv==2023.2.19
 
 RUN mkdir -p /var/www/app && mkdir /app
 
